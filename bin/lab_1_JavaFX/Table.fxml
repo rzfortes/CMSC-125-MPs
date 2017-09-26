@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="509.0" prefWidth="633.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="lab_1_JavaFX.TableController">
+   <children>
+      <Text fx:id="print_res" layoutX="13.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="607.0" />
+      <TableView layoutX="16.0" layoutY="90.0" prefHeight="200.0" prefWidth="605.0">
+         <columns>
+            <TableColumn fx:id="res_col" prefWidth="115.0" text="Resources" />
+            <TableColumn fx:id="res_stat" minWidth="0.0" prefWidth="110.0" text="Status:" />
+            <TableColumn fx:id="res_usedBy" minWidth="0.0" prefWidth="138.0" text="used by:" />
+            <TableColumn fx:id="res_time_left" prefWidth="121.0" text="Time left:" />
+            <TableColumn fx:id="res_users_in_wait" prefWidth="119.0" text="users &quot;in waiting&quot;:" />
+         </columns>
+      </TableView>
+      <TableView layoutX="16.0" layoutY="300.0" prefHeight="200.0" prefWidth="605.0">
+         <columns>
+            <TableColumn fx:id="user" prefWidth="163.0" text="User:" />
+            <TableColumn fx:id="user_will_use" minWidth="0.0" prefWidth="238.0" text="will use:" />
+            <TableColumn fx:id="user_time_left" prefWidth="203.0" text="in:" />
+         </columns>
+      </TableView>
+      <Text fx:id="print_users" layoutX="12.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="606.9999833106995" />
+   </children>
+</AnchorPane>
