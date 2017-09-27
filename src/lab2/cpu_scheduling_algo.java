@@ -11,7 +11,7 @@ import java.util.Scanner;
 
 public class cpu_scheduling_algo {
 	
-	private int[][] data = new int[20][6];
+	private int[][] data = new int[20][7];
 	private Queue<Integer> queue = new ArrayDeque<>();
 	
 	// public constructor
@@ -115,6 +115,7 @@ public class cpu_scheduling_algo {
 				compute(3);
 			} else if(choice == 5) {
 				System.out.println("You chose Round-Robin.");
+				compute2();
 			} else if(choice == 6) {
 				System.out.println("You chose to go to menu.");
 				menu();
@@ -145,6 +146,25 @@ public class cpu_scheduling_algo {
 		System.out.println("Average Waiting Time: " + AT);
 	}
 	
+	// for computing round robin
+	public void compute2() {
+		// add each process in the queue
+		add_in_queue();
+		// but first, copy the value of burst time to remaining time for subtracting later
+		copy_burst_time();
+		// do gantt chart version 2
+		computeGANTT2();
+		// check initial waiting time
+		computeWT2();
+		// display the waiting time of each process
+		displayWT();
+		// compute for the average time
+		double AT = computeAT();
+		System.out.println("Average Waiting Time: " + AT);
+//		// check the values
+//		printarr();
+	}
+	
 	public void sort_arr(int column) {
 		// because JAVA 8 -> sorts column two which is the Arrival
 		Arrays.sort(data, (a, b) -> Integer.compare(a[column], b[column]));
@@ -156,6 +176,13 @@ public class cpu_scheduling_algo {
 			// for checking the values
 //			System.out.println(queue.peek());
 //			queue.remove();
+		}
+	}
+	
+	public void copy_burst_time() {
+		// copy the value of burst time into remaining time
+		for(int i = 0; i < data.length; i++) {
+			data[i][6] = data[i][2];
 		}
 	}
 	
@@ -171,9 +198,57 @@ public class cpu_scheduling_algo {
 		
 	}
 	
+	// for computing the gantt chart of round-robin -- quantum is 4
+	public void computeGANTT2() {
+		int currentPT = 0; // current process time
+//		int i = 0;
+		
+		while(!queue.isEmpty()) {
+			int i = queue.peek() - 1;
+//			System.out.println("current process: " + i);
+			
+			if((data[i][6] - 4) >= 0) {
+				data[i][6] = data[i][6] - 4;
+				currentPT += 4;
+				data[i][4] = currentPT;
+			} else {
+				currentPT += data[i][6];
+				data[i][4] = currentPT;
+				data[i][6] -= data[i][6];
+			}
+			
+			// if remaining time is not yet equal to 0, add it again to the queue
+			if((data[i][6]) > 0) {
+				queue.add(data[i][0]);
+			}
+			
+//			System.out.println("remaining time: " + data[i][6]);
+			
+			queue.remove();
+//			i++;
+			
+		}
+		
+	}
+	
 	public void computeWT() {
 		for(int i = 0; i < data.length; i++) {
 			data[i][5] = data[i][4] - data[i][2]; // waiting time = time the process was completed - burst time
+		}
+	}
+	
+	public void computeWT2() {
+		for(int i = 0; i < data.length; i++) {
+			int modulo = data[i][2] % 4; // burst time / quantum
+			int context_switch = data[i][2] / 4; // burst time divided by quantum
+			
+			// compute first for the initial waiting time
+			if(modulo == 0) {
+				data[i][5] = (data[i][4] - 4) - ((context_switch - 1) * 4); // process - quantum - (number of context switching * quantum)
+			} else {
+				data[i][5] = (data[i][4] - modulo) - (context_switch * 4); // process - modulo - (number of context switching * quantum)
+			}
+			
 		}
 	}
 	
